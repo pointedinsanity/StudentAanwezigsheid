@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= mode === 'register' ? 'Registreren' : 'Inloggen' %> | StudentAanwezigheid</title>
+  <style>
+    :root { color-scheme: light; --ink: #142442; --muted: #748096; --line: #e7e9e8; --mint: #d8efdc; --green: #00a77d; --orange: #f06408; --cream: #fffaf4; --blue-soft: #eef3f0; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; color: var(--ink); background-color: #24262b; background-image: radial-gradient(#55575c 1px, transparent 1px); background-size: 24px 24px; font-family: Arial, sans-serif; }
+    .page { min-height: calc(100vh - 24px); display: flex; flex-direction: column; align-items: center; margin: 12px; padding: 32px 16px 18px; border: 1px solid #e7e9e8; border-radius: 8px; background-color: var(--cream); background-image: radial-gradient(#eadfd7 .8px, transparent .8px); background-size: 22px 22px; }
+    .brand { display: flex; flex-direction: column; align-items: center; margin-bottom: 23px; }
+    .brand-mark { display: grid; place-items: center; width: 29px; height: 29px; margin-bottom: 9px; border-radius: 8px; color: #fff; background: var(--orange); font-weight: 700; }
+    .brand-name { font-size: 20px; font-weight: 700; }
+    .brand-subtitle { margin-top: 4px; color: var(--muted); font-size: 9px; }
+    .form-side { width: min(100%, 250px); }
+    .form-wrap { padding: 19px 18px 16px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255, 255, 255, .96); box-shadow: 0 5px 15px rgba(42, 49, 63, .06); }
+    .tabs { display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 18px; padding: 3px; border-radius: 7px; background: var(--blue-soft); }
+    .tab { padding: 8px 4px; border-radius: 5px; color: #61718a; text-align: center; font-size: 9px; }
+    .tab.active { color: var(--ink); background: var(--mint); box-shadow: 0 1px 3px rgba(25, 42, 70, .08); }
+    .field { display: block; margin: 13px 0; color: var(--ink); font-size: 8px; font-weight: 700; text-transform: uppercase; }
+    input { width: 100%; margin-top: 6px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 7px; color: var(--ink); background: #fff; font: 9px Arial, sans-serif; outline: none; }
+    input::placeholder { color: #9aa8ba; }
+    input:focus { border-color: var(--green); box-shadow: 0 0 0 2px rgba(0, 167, 125, .12); }
+    .password-row { display: flex; align-items: center; justify-content: space-between; }
+    .forgot { color: var(--orange); font-size: 8px; font-weight: 400; text-transform: none; }
+    button { width: 100%; margin-top: 6px; padding: 9px; border: 0; border-radius: 7px; color: #fff; background: var(--orange); cursor: pointer; font: 700 9px Arial, sans-serif; }
+    button:hover { background: #ce4d00; }
+    .error { margin: 0 0 12px; padding: 8px; border-radius: 5px; color: #9a3d27; background: #fff0eb; font-size: 9px; }
+    .register { margin: 15px 0 0; padding-top: 12px; border-top: 1px solid #edf0f3; color: var(--muted); text-align: center; font-size: 8px; }
+    .register a, .support a { color: var(--orange); text-decoration: none; }
+    .support { margin: 14px 0 0; color: var(--muted); text-align: center; font-size: 8px; }
+    @media (max-width: 420px) { .page { padding-top: 25px; } .form-side { width: min(100%, 300px); } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="brand"><span class="brand-mark">S</span><span class="brand-name">Scalda</span><span class="brand-subtitle">Onderwijs Portaal</span></div>
+    <section class="form-side">
+      <div class="form-wrap">
+        <div class="tabs"><a class="tab <%= mode === 'login' ? 'active' : '' %>" href="/auth/login">Inloggen</a><a class="tab <%= mode === 'register' ? 'active' : '' %>" href="/auth/register">Registreren</a></div>
+        <% if (error) { %><p class="error" role="alert"><%= error %></p><% } %>
+        <% if (message) { %><p class="message" role="status"><%= message %></p><% } %>
+        <form method="post" action="/auth/<%= mode === 'register' ? 'register' : 'login' %>">
+          <% if (mode === 'register') { %><label class="field" for="name">Naam<input id="name" name="name" type="text" placeholder="bijv. Jan van den Berg" autocomplete="name" required></label><% } %>
+          <label class="field" for="email">E-mailadres<input id="email" name="email" type="email" value="<%= email %>" placeholder="bijv. j.vandenberg@scalda.nl" autocomplete="username" required></label>
+          <label class="field" for="password"><span class="password-row"><span>Wachtwoord</span><% if (mode === 'login') { %><span class="forgot">Vergeten?</span><% } %></span><input id="password" name="password" type="password" placeholder="••••••••" autocomplete="<%= mode === 'register' ? 'new-password' : 'current-password' %>" required></label>
+          <% if (mode === 'register') { %><label class="field" for="password_confirmation">Herhaal wachtwoord<input id="password_confirmation" name="password_confirmation" type="password" placeholder="••••••••" autocomplete="new-password" required></label><% } %>
+          <button type="submit"><%= mode === 'register' ? 'Account aanmaken' : 'Inloggen' %>&nbsp; →</button>
+        </form>
+        <p class="register"><%= mode === 'register' ? 'Heb je al een account?' : 'Nog geen account?' %> <a href="/auth/<%= mode === 'register' ? 'login' : 'register' %>"><%= mode === 'register' ? 'Log hier in' : 'Registreer hier' %></a></p>
+      </div>
+      <p class="support">Hulp nodig? <a href="#">Neem contact op met IT Support</a></p>
+    </section>
+  </main>
+</body>
+</html>

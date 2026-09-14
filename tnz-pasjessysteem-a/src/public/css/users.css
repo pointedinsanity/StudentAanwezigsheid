@@ -1,0 +1,93 @@
+:root {
+  --users-ink: #142442;
+  --users-muted: #748096;
+  --users-line: #e7e9e8;
+  --users-surface: #fff;
+  --users-accent: #f06408;
+}
+
+.users-page {
+  min-height: 100vh;
+  color: var(--users-ink);
+  background: #fffaf4;
+  font-family: Arial, sans-serif;
+}
+
+.users-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.users-header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.users-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.users-actions a,
+.users-actions button {
+  padding: 9px 12px;
+  border: 1px solid var(--users-accent);
+  border-radius: 5px;
+  color: #fff;
+  background: var(--users-accent);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.users-search {
+  width: min(100%, 320px);
+  min-height: 36px;
+  margin-bottom: 16px;
+  padding: 0 10px;
+  border: 1px solid var(--users-line);
+  border-radius: 5px;
+  background: var(--users-surface);
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--users-line);
+  background: var(--users-surface);
+}
+
+.users-table th,
+.users-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--users-line);
+  text-align: left;
+  font-size: 12px;
+}
+
+.users-table th {
+  color: var(--users-muted);
+  background: #f6f8f5;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.users-role {
+  color: var(--users-muted);
+  font-size: 11px;
+}
+
+.users-table a {
+  color: var(--users-accent);
+  text-decoration: none;
+}
+
+@media (max-width: 700px) {
+  .users-table {
+    display: block;
+    overflow-x: auto;
+  }
+}
