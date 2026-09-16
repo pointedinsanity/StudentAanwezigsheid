@@ -1,11 +1,11 @@
 const supabase = require('../config/supabaseClient');
 
 function showLogin(req, res) {
-  res.render('login', { error: null, message: null, email: '', mode: 'login' });
+  res.render('login', { error: null, message: null, email: '', student_number: '', mode: 'login' });
 }
 
 function showRegister(req, res) {
-  res.render('login', { error: null, message: null, email: '', mode: 'register' });
+  res.render('login', { error: null, message: null, email: '', student_number: '', mode: 'register' });
 }
 
 function registrationErrorMessage(error) {
@@ -27,6 +27,7 @@ async function login(req, res, next) {
       error: 'Vul je e-mailadres en wachtwoord in.',
       message: null,
       email,
+      student_number: '',
       mode: 'login'
     });
   }
@@ -39,6 +40,7 @@ async function login(req, res, next) {
         error: 'De inloggegevens zijn niet juist.',
         message: null,
         email,
+        student_number: '',
         mode: 'login'
       });
     }
@@ -59,16 +61,18 @@ async function login(req, res, next) {
 async function register(req, res, next) {
   const name = typeof req.body.name === 'string' ? req.body.name.trim() : '';
   const email = typeof req.body.email === 'string' ? req.body.email.trim() : '';
+  const studentNumber = typeof req.body.student_number === 'string' ? req.body.student_number.trim() : '';
   const password = typeof req.body.password === 'string' ? req.body.password : '';
   const passwordConfirmation = typeof req.body.password_confirmation === 'string'
     ? req.body.password_confirmation
     : '';
 
-  if (!name || !email || !password || !passwordConfirmation) {
+  if (!name || !email || !studentNumber || !password || !passwordConfirmation) {
     return res.status(422).render('login', {
-      error: 'Vul alle velden in.',
+      error: 'Vul alle velden in, inclusief studentnummer.',
       message: null,
       email,
+      student_number: studentNumber,
       mode: 'register'
     });
   }
@@ -78,6 +82,7 @@ async function register(req, res, next) {
       error: 'Je wachtwoord moet minimaal 6 tekens bevatten.',
       message: null,
       email,
+      student_number: studentNumber,
       mode: 'register'
     });
   }
@@ -87,6 +92,7 @@ async function register(req, res, next) {
       error: 'De wachtwoorden komen niet overeen.',
       message: null,
       email,
+      student_number: studentNumber,
       mode: 'register'
     });
   }
@@ -95,7 +101,7 @@ async function register(req, res, next) {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { name } }
+      options: { data: { name, student_number: studentNumber } }
     });
 
     if (error) {
@@ -103,6 +109,7 @@ async function register(req, res, next) {
         error: registrationErrorMessage(error),
         message: null,
         email,
+        student_number: studentNumber,
         mode: 'register'
       });
     }
@@ -121,6 +128,7 @@ async function register(req, res, next) {
       error: null,
       message: 'Account aangemaakt. Controleer je e-mail om je account te bevestigen.',
       email,
+      student_number: '',
       mode: 'login'
     });
   } catch (err) {

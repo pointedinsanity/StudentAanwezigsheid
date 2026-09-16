@@ -42,10 +42,10 @@
 <body>
   <div class="shell">
     <aside><div class="brand"><span class="mark">S</span><span>SCALDA<small>Education Portal</small></span></div><nav><a class="active" href="/dashboard">▦ &nbsp; Dashboard</a><a href="#">♧ &nbsp; Aanwezigheid</a><a href="#">⌑ &nbsp; Kalender</a><a href="#">♙ &nbsp; Gebruikers</a></nav><form method="post" action="/auth/logout"><button class="logout" type="submit">↪ &nbsp; Uitloggen</button></form></aside>
-    <section class="content"><header><div class="search">⌕ &nbsp; Zoeken in Scalda...</div><span class="user"><%= user.email %></span></header><main>
+    <section class="content"><header><div class="search">⌕ &nbsp; Zoeken in Scalda...</div><span class="user"><%= user.user_metadata && user.user_metadata.name ? user.user_metadata.name : user.email %></span></header><main>
       <section class="welcome"><div><p class="eyebrow">Donderdag 24 oktober</p><h1>Dashboard Overzicht</h1></div><p class="date">Docentendashboard</p></section>
       <section class="stats"><article class="stat"><span class="stat-label">Aanwezig</span><strong class="stat-value">142</strong></article><article class="stat"><span class="stat-label">Te laat</span><strong class="stat-value">18</strong></article><article class="stat"><span class="stat-label">Afwezig</span><strong class="stat-value">12</strong></article></section>
-      <section class="panel"><h2>Actuele Aanwezigheidsstatus</h2><p>Live registratie van studenten via toegangspoorten en NFC-terminals.</p></section>
+      <section class="panel"><h2>Gebruiker</h2><p><strong>Naam:</strong> <%= user.user_metadata && user.user_metadata.name ? user.user_metadata.name : user.email %></p><p><strong>E-mail:</strong> <%= user.email %></p><p><strong>Studentnummer:</strong> <%= user.user_metadata && user.user_metadata.student_number ? user.user_metadata.student_number : 'Niet ingesteld' %></p></section>
     </main></section>
   </div>
 </body>

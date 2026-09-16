@@ -2,6 +2,7 @@ create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   name text not null default '',
   email text not null,
+  student_number text not null default '',
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -25,16 +26,18 @@ language plpgsql
 security definer set search_path = public
 as $$
 begin
-  insert into public.profiles (id, name, email, updated_at)
+  insert into public.profiles (id, name, email, student_number, updated_at)
   values (
     new.id,
     coalesce(new.raw_user_meta_data ->> 'name', ''),
     new.email,
+    coalesce(new.raw_user_meta_data ->> 'student_number', ''),
     now()
   )
   on conflict (id) do update set
     name = excluded.name,
     email = excluded.email,
+    student_number = excluded.student_number,
     updated_at = now();
 
   return new;
@@ -46,10 +49,11 @@ create trigger on_auth_user_profile_sync
 after insert or update of email, raw_user_meta_data on auth.users
 for each row execute function public.sync_profile_from_auth();
 
-insert into public.profiles (id, name, email)
-select id, coalesce(raw_user_meta_data ->> 'name', ''), email
+insert into public.profiles (id, name, email, student_number)
+select id, coalesce(raw_user_meta_data ->> 'name', ''), email, coalesce(raw_user_meta_data ->> 'student_number', '')
 from auth.users
 on conflict (id) do update set
   name = excluded.name,
   email = excluded.email,
+  student_number = excluded.student_number,
   updated_at = now();

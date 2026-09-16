@@ -43,6 +43,7 @@
         <% if (message) { %><p class="message" role="status"><%= message %></p><% } %>
         <form method="post" action="/auth/<%= mode === 'register' ? 'register' : 'login' %>">
           <% if (mode === 'register') { %><label class="field" for="name">Naam<input id="name" name="name" type="text" placeholder="bijv. Jan van den Berg" autocomplete="name" required></label><% } %>
+          <% if (mode === 'register') { %><label class="field" for="student_number">Studentnummer<input id="student_number" name="student_number" type="text" value="<%= student_number %>" placeholder="bijv. 20241234" autocomplete="off" required></label><% } %>
           <label class="field" for="email">E-mailadres<input id="email" name="email" type="email" value="<%= email %>" placeholder="bijv. j.vandenberg@scalda.nl" autocomplete="username" required></label>
           <label class="field" for="password"><span class="password-row"><span>Wachtwoord</span><% if (mode === 'login') { %><span class="forgot">Vergeten?</span><% } %></span><input id="password" name="password" type="password" placeholder="••••••••" autocomplete="<%= mode === 'register' ? 'new-password' : 'current-password' %>" required></label>
           <% if (mode === 'register') { %><label class="field" for="password_confirmation">Herhaal wachtwoord<input id="password_confirmation" name="password_confirmation" type="password" placeholder="••••••••" autocomplete="new-password" required></label><% } %>
